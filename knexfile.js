@@ -8,11 +8,11 @@ module.exports = {
    client: 'pg',
   connection: {
     host: 'localhost',
-    port: 5432,
+    port: process.env.PG_PORT,
     user: process.env.PG_USER,
-    password:process.env.PG_PASS,
+    password: process.env.PG_PASS,
     database: 'best_banking_app',
 }
-  }
+}
   
 }
