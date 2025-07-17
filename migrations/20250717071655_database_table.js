@@ -4,7 +4,6 @@ exports.up = function(knex) {
     table.increments('id');
     table.string('account', 12).notNullabe;
     table.integer('amount').defaultTo(0);
-    table.foreign('from_account').references('id');
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
   })
