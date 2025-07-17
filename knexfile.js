@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+require('dotenv').config();
 
 dotenv.config;
 module.exports = {
@@ -6,11 +7,12 @@ module.exports = {
   development: {
    client: 'pg',
   connection: {
-    host: '',
+    host: 'localhost',
     port: 5432,
     user: process.env.PG_USER,
     password:process.env.PG_PASS,
-    database: 'bank_app',
+    database: 'best_banking_app',
 }
   }
+  
 }
