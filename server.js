@@ -24,7 +24,22 @@ app.get("/acc", async (req, res) => {
   res.send(data);
 });
 
-//Listening to the defined Port
+
+app.post("/register", async (req, res) => {
+    const { account, pincode } = req.body;
+    if (!account || !pincode) {
+        return res.status(422).send("all fields are required");
+    }
+    const existingAccount = await kn("accounts").where({ account }).first();
+    if (existingAccount) {
+        return res.status(422).send("account already exists");
+    }
+    await kn('accounts').insert({account, pincode });
+    res.json({message: "user Registered"});
+});
+
+
+
 app.listen(port, () => {
   console.log("listening to port" + port);
 });
