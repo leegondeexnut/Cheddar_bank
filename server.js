@@ -34,9 +34,46 @@ app.post("/register", async (req, res) => {
     if (existingAccount) {
         return res.status(422).send("account already exists");
     }
+    if(isNaN(parseInt(pincode)) || pincode.length !== 6) {
+        return res.status(422).send("pincode must be a 6 digit number");
+    }
     await kn('accounts').insert({account, pincode });
     res.json({message: "user Registered"});
 });
+
+app.post("/transaction", async (req, res) => {
+    const { from_account, to_account, amount } = req.body;
+    if (!from_account || !to_account || !amount) {
+        return res.status(422).send("all fields are required");
+    }
+    if (isNaN(amount) || amount <= 0) {
+        return res.status(422).send("amount must be a positive number");
+    }
+    
+    const fromAccount = await kn("accounts").where({ id: from_account }).first();
+    const toAccount = await kn("accounts").where({ id: to_account }).first();
+    
+    if (!fromAccount || !toAccount) {
+        return res.status(404).send("one or both accounts not found");
+    }
+    
+    if (fromAccount.amount < amount) {
+        return res.status(422).send("insufficient funds");
+    }
+    
+    await kn.transaction(async trx => {
+        await trx('accounts').where({ id: from_account }).decrement('amount', amount);
+        await trx('accounts').where({ id: to_account }).increment('amount', amount);
+        await trx('transactions').insert({
+            amount,
+            from_account,
+            to_account,
+            transacted_at: new Date()
+        });
+    });
+    
+    res.json({message: "transaction successful"});
+})
 
 
 
