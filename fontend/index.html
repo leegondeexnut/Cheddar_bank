@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>best_banking_app</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="banker.js"></script>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-700">
     <div class="h-150 w-150 bg-white rounded-md text-center mt-4 border border-blue-600">
         <h1 class="text-4xl text-blue-600" > bestBanking</h1>
-        <div class="flex flex-col items-center mt-6">
+        <div id="loginForm" class="flex flex-col items-center mt-6">
             <input 
             type="text" 
             id="userIdInput" 
@@ -23,21 +25,30 @@
             class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
             />
             <button onclick="submitUserId()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit</button>
+       
+            <button onclick="openRegistration()" class="text-black bg-white">Create Account</button>
         </div>
+        
+        
+        <form onsubmit="register(event)"  id='registrationForm' class="flex flex-col items-center mt-6 hidden">
+            <input 
+            type="text" 
+            id="newbieId" 
+            placeholder="Create Username" 
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input 
+            type="text" 
+            id="newbiePassword" 
+            placeholder="Create Passwrd" 
+            class="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
+            />
+            <button onclick="register(event)" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Register</button>
+        </form>
+        
     </div>
+    
 
-    <script>
-        function submitUserId() {
-            const userId = document.getElementById('userIdInput').value;
-            alert("User ID entered: " + userId);
-            // You can do more with userId (e.g., send to server)
-            }
-        function submitUserId() {
-            const userId = document.getElementById('password').value;
-            alert("User ID entered: " + userId);
-            // You can do more with userId (e.g., send to server)
-            }
 
-    </script>
 </body>
 </html>
