@@ -72,13 +72,13 @@ app.post("/transaction", async (req, res) => {
         return res.status(404).send("one or both accounts not found");
     }
     
-    if (fromAccount.amount < amount) {
+    if (fromAccount.balance < amount) {
         return res.status(422).send("insufficient funds");
     }
     
     await kn.transaction(async trx => {
-        await trx('accounts').where({ id: from_account }).decrement('amount', amount);
-        await trx('accounts').where({ id: to_account }).increment('amount', amount);
+        await trx('accounts').where({ id: from_account }).decrement('balance', amount);
+        await trx('accounts').where({ id: to_account }).increment('balance', amount);
         await trx('transactions').insert({
             amount,
             from_account,

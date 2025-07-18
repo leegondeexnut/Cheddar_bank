@@ -58,6 +58,7 @@ function submitUserId(){
     axios.post("http://localhost:3008/login", accountDetails)
     .then(response => {
         alert(response.data.message);
+        window.location.href = "page.html"
     })
 }
 
