@@ -2,6 +2,8 @@ const registrationForm = document.getElementById('registrationForm');
 const loginForm = document.getElementById('loginForm');
 const newbieId = document.getElementById('newbieId');
 const newbiePassword = document.getElementById('newbiePassword');
+const userId = document.getElementById('userIdInput');
+const userPassword = document.getElementById('password');
 
 function closeRegistration(){
     registrationForm.classList.add('hidden');
@@ -38,5 +40,24 @@ axios.post("http://localhost:3008/register", newbieDetails)
 })
 
     
+}
+
+function submitUserId(){
+    const account = userId.value;
+    const pincode = userPassword.value;
+    if(!account || !pincode){
+      return  alert("All fields should be filled.")
+    }
+    if(isNaN(Number(pincode)) || pincode.length !== 6) {
+        return alert("Pincode must be a number and 6 digits long");
+    }
+    const accountDetails = {
+        account,
+        pincode
+    }
+    axios.post("http://localhost:3008/login", accountDetails)
+    .then(response => {
+        alert(response.data.message);
+    })
 }
 
