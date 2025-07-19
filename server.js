@@ -24,6 +24,26 @@ app.get("/acc", async (req, res) => {
   res.send(data);
 });
 
+app.get("acc/:account", async (req, res) => {
+
+    const account = req.params;
+
+    if (!account) {
+      return res.status(400).json({ message: "No account provided in URL" });
+    }
+
+    const data = await kn("accounts").where({ account }).first();
+
+    if (!data) {
+      return res.status(404).json({ message: "No such account exists" });
+    }
+
+    return res.status(200).json({ message: "Account found", data });
+
+  });
+
+
+
 
 app.post("/register", async (req, res) => {
     const { account, pincode } = req.body;

@@ -9,7 +9,7 @@ function displayProfile(){
 
     if (!profileData) {
         console.error("No profile found for this ID");
-        window.location.href = "login.html"; // or show a message
+        window.location.href = "login.html";
         return;
     }
     const profile = JSON.parse(profileData);
@@ -35,7 +35,10 @@ function displayProfile(){
     profiledisplay.appendChild(accountBalance);
     profiledisplay.appendChild(accountCreated);
     profiledisplay.appendChild(accountUpdated);
+
     
 }
 displayProfile();
+
+
 
