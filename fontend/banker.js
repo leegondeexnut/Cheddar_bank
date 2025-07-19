@@ -58,7 +58,11 @@ function submitUserId(){
     axios.post("http://localhost:3008/login", accountDetails)
     .then(response => {
         alert(response.data.message);
-        window.location.href = "page.html"
+        const profile = response.data.details;
+        const Id = profile.id;
+        // console.log(profile)
+        localStorage.setItem(`Profile${Id}`, JSON.stringify(profile));
+        window.location.href = `./page.html?Id=${Id}`
     })
 }
 
