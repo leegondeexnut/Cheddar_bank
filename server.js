@@ -53,7 +53,9 @@ app.post("/login", async (req, res) => {
   if (existingAccount.pincode !== pincode){
     return res.status(422).send("incorrect pincode");
   }
-  res.json({message: "login successful"});
+  res.json({message: "login successful",
+    details: existingAccount
+  });
 })
 
 app.post("/transaction", async (req, res) => {
