@@ -16,8 +16,11 @@ function displayProfile(){
         return;
     }
     
+    axios.get(`http://localhost:3008/acc/${profile.account}`)
+    .then(response => {
+    
     const usersAccount = profile.account;
-    const balance = profile.balance;
+    const balance = response.data.data.balance;
     const createdAt = profile.created_at;
     const updatedAt = profile.updated_at;
 
@@ -38,6 +41,8 @@ function displayProfile(){
     profiledisplay.appendChild(accountBalance);
     profiledisplay.appendChild(accountCreated);
     profiledisplay.appendChild(accountUpdated);
+
+    })
 
     
 }
@@ -98,6 +103,7 @@ function sendMoney(event){
     .then(response => {
         alert(response.data.message);
         closeSendMoneyModal();
+        window.location.reload();
     })
     .catch(error => {
     if (error.response) {
