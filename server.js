@@ -24,9 +24,11 @@ app.get("/acc", async (req, res) => {
   res.send(data);
 });
 
-app.get("acc/:account", async (req, res) => {
+app.get("/acc/:account", async (req, res) => {
 
-    const account = req.params;
+    const accounts = req.params.account;
+    const account = `${accounts}`
+    
 
     if (!account) {
       return res.status(400).json({ message: "No account provided in URL" });
@@ -79,16 +81,18 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/transaction", async (req, res) => {
-    const { from_account, to_account, amount } = req.body;
+    let { from_account, to_account, amount } = req.body;
+    from_account = `${from_account}`
+    to_account = `${to_account}`
     if (!from_account || !to_account || !amount) {
         return res.status(422).send("all fields are required");
     }
-    if (isNaN(amount) || amount <= 0) {
+    if ( isNaN(Number(amount)) || Number(amount) <= 0) {
         return res.status(422).send("amount must be a positive number");
     }
     
-    const fromAccount = await kn("accounts").where({ id: from_account }).first();
-    const toAccount = await kn("accounts").where({ id: to_account }).first();
+    const fromAccount = await kn("accounts").where({ account: from_account }).first();
+    const toAccount = await kn("accounts").where({ account: to_account }).first();
     
     if (!fromAccount || !toAccount) {
         return res.status(404).send("one or both accounts not found");
@@ -99,16 +103,30 @@ app.post("/transaction", async (req, res) => {
     }
     
     await kn.transaction(async trx => {
-        await trx('accounts').where({ id: from_account }).decrement('balance', amount);
-        await trx('accounts').where({ id: to_account }).increment('balance', amount);
+        await trx('accounts').where({ account: from_account }).decrement('balance', amount);
+        await trx('accounts').where({ account: to_account }).increment('balance', amount);
         await trx('transactions').insert({
             amount,
-            from_account,
-            to_account,
+            from_account: fromAccount.id,
+            to_account: toAccount.id
         });
     });
     
     res.json({message: "transaction successful"});
+})
+
+
+app.get("/transaction/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(422).send("transaction id is required");
+  }
+  const transaction = await kn("transactions").where({ from_account: id }).orWhere({ to_account: id}).first();
+  if (!transaction){
+    return res.json({message: "No transaction found for this account"});
+  }
+  res.send(transaction);
+
 })
 
 
