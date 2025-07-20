@@ -4,6 +4,9 @@ const profileData = localStorage.getItem(`Profile${id}`);
 const profiledisplay = document.getElementById('profileModal');
 const sendingMoneyModal = document.getElementById('sendMoneyModal');
 const profile = JSON.parse(profileData);
+const transactionModal = document.getElementById('transactionModal');
+const transactionTableBody = document.getElementById('transactionTableBody');
+
 
 function displayProfile(){
 
@@ -53,6 +56,17 @@ function closeSendMoneyModal(){
 };
 
 
+function openTransactionModal(event){
+    event.preventDefault();
+    transactionModal.classList.remove('hidden');
+};
+
+function closeTransactionModal(){
+    transactionModal.classList.add('hidden');
+};
+
+
+
 function sendMoney(event){
     event.preventDefault();
     const accountNumber = document.getElementById('toAccountNumber').value;
@@ -99,5 +113,29 @@ function sendMoney(event){
 
 function seeTransaction(event){
     event.preventDefault();
-    
+    openTransactionModal(event);
+    axios.get(`http://localhost:3008/transaction/${id}`)
+    .then(response => {
+        transactionTableBody.innerHTML = "";
+        const transactions = response.data;
+        transactions.forEach((transaction)=>{
+            const row = document.createElement('tr');
+            const transactionIdCell = document.createElement('td');
+            const amountCell = document.createElement('td');
+            const fromAccountCell = document.createElement('td');
+            const toAccountCell = document.createElement('td');
+            const dateCell = document.createElement('td');
+            transactionIdCell.innerText = transaction.transaction_id;
+            amountCell.innerText = transaction.amount;
+            fromAccountCell.innerText = transaction.from_account;
+            toAccountCell.innerText = transaction.to_account;
+            dateCell.innerText = new Date(transaction.transacted_at).toLocaleString();
+            row.appendChild(transactionIdCell);
+            row.appendChild(amountCell);  
+            row.appendChild(fromAccountCell);
+            row.appendChild(toAccountCell);
+            row.appendChild(dateCell);
+            transactionTableBody.appendChild(row);
+        })
+    })
 }

@@ -19,7 +19,7 @@
       class="fixed inset-20 bg-gray-900/80 flex flex-col justify-center w-fit h-fit items-center z-50 p-4 rounded-lg shadow-lg text-white"
     >
     </div>
-    <div class="grid grid-cols-3 justify-between gap-4 px-4 py-2 bg-white text-black w-full max-w-md mt-96"><button >see transaction</button><button onclick="openSendMoneyModal(event)">send money</button><button>pay bill</button></div>
+    <div class="grid grid-cols-3 justify-between gap-4 px-4 py-2 bg-white text-black w-full max-w-md mt-96"><button onclick="seeTransaction(event)">see transaction</button><button onclick="openSendMoneyModal(event)">send money</button><button>pay bill</button></div>
     <div
       id="sendMoneyModal"
       class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
@@ -90,6 +90,43 @@
           </button>
         </form>
          
+      </div>
+    </div>
+    <div
+      id="transactionModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300 p-6"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300 "
+      >
+      <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Send Money
+          </h2>
+          <button
+            onclick="closeTransactionModal()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+      </div>
+      <table class="min-w-full text-sm text-left text-white border border-gray-600">
+        <thead class="bg-gray-700 text-gray-300 uppercase text-xs">
+          <tr>
+          <th class="px-4 py-2 border border-gray-600">Transaction ID</th>
+          <th class="px-4 py-2 border border-gray-600">Amount</th>
+          <th class="px-4 py-2 border border-gray-600">From Account</th>
+          <th class="px-4 py-2 border border-gray-600">To Account</th>
+          <th class="px-4 py-2 border border-gray-600">Transaction Date</th>
+          </tr>
+        </thead>
+      <tbody id="transactionTableBody" class="divide-y divide-gray-700">
+      </tbody>
+</table>
+
       </div>
     </div>
 </body>

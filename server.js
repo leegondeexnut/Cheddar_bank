@@ -121,7 +121,7 @@ app.get("/transaction/:id", async (req, res) => {
   if (!id) {
     return res.status(422).send("transaction id is required");
   }
-  const transaction = await kn("transactions").where({ from_account: id }).orWhere({ to_account: id}).first();
+  const transaction = await kn("transactions").where({ from_account: id }).orWhere({ to_account: id});
   if (!transaction){
     return res.json({message: "No transaction found for this account"});
   }
