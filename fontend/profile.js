@@ -1,18 +1,18 @@
-
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('Id');
+const profileData = localStorage.getItem(`Profile${id}`);
 const profiledisplay = document.getElementById('profileModal');
+const sendingMoneyModal = document.getElementById('sendMoneyModal');
+const profile = JSON.parse(profileData);
 
 function displayProfile(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('Id');
-
-    const profileData = localStorage.getItem(`Profile${id}`);
 
     if (!profileData) {
         console.error("No profile found for this ID");
-        window.location.href = "login.html";
+        // window.location.href = "login.html";
         return;
     }
-    const profile = JSON.parse(profileData);
+    
     const usersAccount = profile.account;
     const balance = profile.balance;
     const createdAt = profile.created_at;
@@ -42,3 +42,62 @@ displayProfile();
 
 
 
+
+function openSendMoneyModal(event){
+    event.preventDefault();
+    sendingMoneyModal.classList.remove('hidden');
+};
+
+function closeSendMoneyModal(){
+    sendingMoneyModal.classList.add('hidden');
+};
+
+
+function sendMoney(event){
+    event.preventDefault();
+    const accountNumber = document.getElementById('toAccountNumber').value;
+    const amount = document.getElementById("sendAmount").value;
+    const pincode = document.getElementById('sendingPin').value;
+    const fromAccount = profile.account;
+    if (!accountNumber || !amount || !pincode) {
+        alert("All fields are required");
+        return;
+    }
+    if (isNaN(Number(amount)) || Number(amount) <= 0) {
+        alert("Amount must be a positive number");
+        return;
+    }
+    
+
+    const transactionDetails = {
+        from_account: fromAccount,
+        to_account: accountNumber,
+        amount: Number(amount)
+    }
+
+    if(pincode !== profile.pincode){
+        alert("Incorrect pincode");
+        return;
+    }
+
+    axios.post("http://localhost:3008/transaction", transactionDetails)
+    .then(response => {
+        alert(response.data.message);
+        closeSendMoneyModal();
+    })
+    .catch(error => {
+    if (error.response) {
+      alert(`Error: ${error.response.data || error.response.statusText}`);
+    } else if (error.request) {
+      alert("No response from server. Please try again later.");
+    } else {
+      alert(`Error: ${error.message}`);
+    }
+})
+}
+
+
+function seeTransaction(event){
+    event.preventDefault();
+    
+}

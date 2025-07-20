@@ -19,7 +19,7 @@
       class="fixed inset-20 bg-gray-900/80 flex flex-col justify-center w-fit h-fit items-center z-50 p-4 rounded-lg shadow-lg text-white"
     >
     </div>
-    <div class="grid grid-cols-3 justify-between gap-4 px-4 py-2 bg-white text-black w-full max-w-md mt-96"><button>see transaction</button><button>send money</button><button>pay bill</button></div>
+    <div class="grid grid-cols-3 justify-between gap-4 px-4 py-2 bg-white text-black w-full max-w-md mt-96"><button >see transaction</button><button onclick="openSendMoneyModal(event)">send money</button><button>pay bill</button></div>
     <div
       id="sendMoneyModal"
       class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
@@ -41,7 +41,7 @@
             ×
           </button>
         </div>
-        <form id="sendMoneyForm" onsubmit="giveMoney(event)">
+        <form id="sendMoneyForm" onsubmit="sendMoney(event)">
           <div class="mb-6">
             <label
               class="block text-gray-200 text-lg font-medium mb-2"
@@ -49,18 +49,20 @@
             >
             <input
               id="toAccountNumber"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              type="text"
+              placeholder="Enter Account Number"
+              aria-required="true"
             />
           </div>
           <div class="mb-6">
             <label
-              for="categoryimg"
               class="block text-gray-200 text-lg font-medium mb-2"
               >Enter Amount</label
             >
             <input
               type="text"
               id="sendAmount"
-              name="categoryimg"
               class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
               placeholder="Enter Ammount"
               aria-required="true"
@@ -75,7 +77,6 @@
             <input
               type="text"
               id="sendingPin"
-              name="categoryimg"
               class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
               placeholder="Enter Pincode"
               aria-required="true"
@@ -85,7 +86,7 @@
             type="submit"
             class="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-all duration-300"
           >
-            Submit
+            Send
           </button>
         </form>
          
