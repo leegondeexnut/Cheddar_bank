@@ -28,7 +28,6 @@ app.get("/acc/:account", async (req, res) => {
 
     const accounts = req.params.account;
     const account = `${accounts}`
-    
 
     if (!account) {
       return res.status(400).json({ message: "No account provided in URL" });
@@ -43,7 +42,6 @@ app.get("/acc/:account", async (req, res) => {
     return res.status(200).json({ message: "Account found", data });
 
   });
-
 
 
 
@@ -128,10 +126,6 @@ app.get("/transaction/:id", async (req, res) => {
   res.send(transaction);
 
 })
-
-
-
-
 
 
 app.listen(port, () => {
