@@ -8,19 +8,38 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script defer src="profile.js"></script>
 </head>
-<body class=" justify-center min-h-screen bg-gray-700/80">
+<body class="min-h-screen bg-gray-700/80 ">
     <nav
       class="bg-gray-900 w-full h-20 flex items-center justify-center sticky top-0 z-50 shadow-2xl w-full"
     >
     <p class="text-white text-2xl font-bold">MJiM</p>
     </nav>
+  <div class="h-full w-150  bg-gray-300 flex items-center justify-center mt-3 my-26 mx-auto">
     <div
       id="profileModal"
-      class="fixed inset-20 bg-gray-900/80 flex flex-col justify-center w-fit h-fit items-center z-50 p-4 rounded-lg shadow-lg text-white"
+      class="fixed inset-20 bg-gray-900/80 flex flex-col justify-center w-fit h-fit items-center z-50 p-4 rounded-lg shadow-lg text-white my-26 mx-auto"
     >
     </div>
-    <div class="grid grid-cols-3 justify-between gap-4 px-4 py-2 bg-white text-black w-full max-w-md mt-96"><button onclick="seeTransaction(event)">see transaction</button><button onclick="openSendMoneyModal(event)">send money</button></div>
-    <div
+    
+    <div class="relative bg-white text-black w-full max-w-md h-96 rounded-lg shadow-md flex flex-col justify-between p-4">
+  <!-- Content at the top -->
+  <div>
+    <h2 class="text-lg font-semibold mb-4">Kuzuzangpola!</h2>
+  </div>
+
+  <!-- Buttons at the bottom -->
+  <div class="grid grid-cols-2 gap-4 mt-10">
+    <button onclick="seeTransaction(event)" class="bg-gray-600 hover:bg-purple-700 text-white font-semibold py-2 rounded">
+      See Transaction
+    </button>
+    <button onclick="openSendMoneyModal(event)" class="bg-gray-600 hover:bg-purple-700 text-white font-semibold py-2 rounded">
+      Send Money
+    </button>
+   </div>
+   </div>
+
+    
+      <div
       id="sendMoneyModal"
       class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
       aria-modal="true"
@@ -125,10 +144,12 @@
         </thead>
       <tbody id="transactionTableBody" class="divide-y divide-gray-700">
       </tbody>
-</table>
+    </table>
 
-      </div>
     </div>
+  </div>
+
+</div>
 </body>
 </html>
 
