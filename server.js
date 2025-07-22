@@ -16,6 +16,11 @@ const kn = knex({
   },
 });
 
+admin = {
+  account: "admin",
+  pincode: "121212"
+}
+
 app.use(cors());
 app.use(express.json());
 
@@ -23,6 +28,12 @@ app.get("/acc", async (req, res) => {
   const data = await kn("accounts").select("*");
   res.send(data);
 });
+
+
+app.get("/admin", (req, res)=>{
+  res.send(admin)
+})
+
 
 app.get("/acc/:account", async (req, res) => {
 
@@ -42,6 +53,69 @@ app.get("/acc/:account", async (req, res) => {
     return res.status(200).json({ message: "Account found", data });
 
   });
+
+
+
+  app.post('/deposit', async (req, res) => {
+    const { to_account, amount } = req.body;
+
+    if (!to_account || !amount) {
+      return res.status(422).send("all fields are required");
+    }
+
+    if (isNaN(Number(amount)) || Number(amount) <= 0) {
+      return res.status(422).send("amount must be a positive number");
+    }
+
+    const existingAccount = await kn("accounts").where({ account:  to_account }).first();
+
+    if (!existingAccount) {
+      return res.status(404).send("account not found");
+    }
+
+    await kn.transaction(async trx => {
+        await trx('accounts').where({ account: to_account }).increment('balance', amount);
+        await trx('transactions').insert({
+            amount,
+            to_account: to_account.id
+        });
+    });
+
+
+    res.json({ message: "Deposit successful" });
+  })
+
+
+
+  app.post('/withdraw', async (req, res) => {
+    const { from_account, amount } = req.body;
+
+    if (!from_account || !amount) {
+      return res.status(422).send("all fields are required");
+    }
+
+    if (isNaN(Number(amount)) || Number(amount) <= 0) {
+      return res.status(422).send("amount must be a positive number");
+    }
+
+    const existingAccount = await kn("accounts").where({ account:  from_account }).first();
+
+    if (!existingAccount) {
+      return res.status(404).send("account not found");
+    }
+
+    await kn.transaction(async trx => {
+        await trx('accounts').where({ account: from_account }).decrement('balance', amount);
+        await trx('transactions').insert({
+            amount,
+            from_account: from_account.id
+        });
+    });
+
+
+    res.json({ message: "Withdraw successful" });
+  })
+
 
 
 

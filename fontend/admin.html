@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>best_banking_app</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="manipulator.js"></script>
+</head>
+<body class="grid grid-cols items-center bg-gray-700">
+    <nav
+      class="bg-gray-900 w-full h-20 flex items-center justify-center sticky top-0 z-50 shadow-2xl w-full"
+    >
+    <p class="text-white text-2xl font-bold">MJiM</p>
+    </nav>
+    <div id="creativeField" class="grid grid-cols items-center m-8 text-gray-200 text-lg font-medium">
+        <div class="grid grid-cols-4 gap-4">
+            <button onclick="openAccounts(event)">Accounts</button><button onclick="openDepositModal(event)">Deposit</button><button onclick="openWithdrawModal(event)">Withdraw</button><button onclick="openSendMoneyModal(event)" class="bg-gray-900 rounded p-2">Transaction</button>
+        </div>
+    <div
+      id="SendMoneyModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Transaction Details
+          </h2>
+          <button
+            onclick="closeSendMoneyModal()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+        </div>
+        <form id="sendMoneyForm" onsubmit="sendMoney(event)">
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              >From Account</label
+            >
+            <input
+              id="fromAccountNumber"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              type="text"
+              placeholder="Enter Account Number"
+              aria-required="true"
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              >To Account</label
+            >
+            <input
+              type="text"
+              id="toAccountNumber"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Account Number"
+              aria-required="true"
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              > Amount </label
+            >
+            <input
+              type="text"
+              id="transactionAmount"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Amount"
+              aria-required="true"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-all duration-300"
+          >
+            Transfer
+          </button>
+          </form>
+          </div>
+          </div>
+<div
+      id="AdminloginModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center z-50 transition-opacity duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300"
+      >
+      <form onsubmit="adminLogin(event)">
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              >Enter pincode</label
+            >
+            <input
+              type="text"
+              id="adminPin"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Pincode"
+              aria-required="true"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-all duration-300"
+          >
+            Submit
+          </button>
+        </form>
+        
+         
+      </div>
+    </div>
+    <div
+      id="depositModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Deposit Details
+          </h2>
+          <button
+            onclick="closeDepositModal()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+        </div>
+        <form id="DepositForm" onsubmit="depositMoney(event)">
+          
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              >To Account</label
+            >
+            <input
+              type="text"
+              id="depositAccount"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Account Number"
+              aria-required="true"
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              > Amount </label
+            >
+            <input
+              type="text"
+              id="depositAmount"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Amount"
+              aria-required="true"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-all duration-300"
+          >
+            Transfer
+          </button>
+          </form>
+          </div>
+          </div>
+          <div
+      id="withdrawModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Deposit Details
+          </h2>
+          <button
+            onclick="closeWithdrawModal()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+        </div>
+        <form id="withdrawForm" onsubmit="withdrawMoney(event)">
+          
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              >From Account</label
+            >
+            <input
+              type="text"
+              id="withdrawAccount"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Account Number"
+              aria-required="true"
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              class="block text-gray-200 text-lg font-medium mb-2"
+              > Amount </label
+            >
+            <input
+              type="text"
+              id="withdrawAmount"
+              class="w-full bg-gray-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              placeholder="Enter Amount"
+              aria-required="true"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-all duration-300"
+          >
+            Withdraw
+          </button>
+          </form>
+          </div>
+          </div>
+
+
+          <div
+      id="transactionModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300 p-6"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300 "
+      >
+      <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Transaction History
+          </h2>
+          <button
+            onclick="closeTransactionModal()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+      </div>
+      <table class="min-w-full text-sm text-left text-white border border-gray-600">
+        <thead class="bg-gray-700 text-gray-300 uppercase text-xs">
+          <tr>
+          <th class="px-4 py-2 border border-gray-600">Transaction ID</th>
+          <th class="px-4 py-2 border border-gray-600">Amount</th>
+          <th class="px-4 py-2 border border-gray-600">From Account</th>
+          <th class="px-4 py-2 border border-gray-600">To Account</th>
+          <th class="px-4 py-2 border border-gray-600">Transaction Date</th>
+          </tr>
+        </thead>
+      <tbody id="transactionTableBody" class="divide-y divide-gray-700">
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+
+
+
+  <div
+      id="AccountsModal"
+      class="fixed inset-0 bg-gray-900/80 backdrop-blur-md flex items-center justify-center hidden z-50 transition-opacity duration-300 p-6"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        class="bg-gray-800 p-8 rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform transition-all duration-300 "
+      >
+      <div class="flex justify-between items-center mb-6">
+          <h2 class="text-white text-2xl font-bold tracking-tight">
+            Accounts
+          </h2>
+          <button
+            onclick="closeAccounts()"
+            class="text-white text-3xl hover:text-red-400 transition-colors duration-200"
+            aria-label="Close modal"
+          >
+            ×
+          </button>
+      </div>
+      <table class="min-w-full text-sm text-left text-white border border-gray-600">
+        <thead class="bg-gray-700 text-gray-300 uppercase text-xs">
+          <tr>
+          <th class="px-4 py-2 border border-gray-600">Account ID</th>
+          <th class="px-4 py-2 border border-gray-600">Account Number</th>
+          <th class="px-4 py-2 border border-gray-600">Balance</th>
+          <th class="px-4 py-2 border border-gray-600">Created At</th>
+          <th class="px-4 py-2 border border-gray-600">Transactions</th>
+          </tr>
+        </thead>
+      <tbody id="accountsBodyTable" class="divide-y divide-gray-700">
+      </tbody>
+    </table>
+
+
+
+</body>
+</html>
